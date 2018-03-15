@@ -2,5 +2,9 @@ inherit_gem:
   rubocop-rails:
     - config/rails.yml
 
+AllCops:
+  Excludes:
+    - bin/*
+
 Style/StringLiterals:
   EnforcedStyle: single_quotes
