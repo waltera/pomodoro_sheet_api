@@ -1,0 +1,24 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 25
+  timeout: 5000
+  reconnect: false
+  template: template0
+  min_messages: WARNING
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  host: <%= ENV['DB_HOST'] %>
+  port: <%= ENV['DB_PORT'] %>
+
+development:
+  <<: *default
+  database: pomodoro_sheet_api_development
+
+test:
+  <<: *default
+  database: pomodoro_sheet_api_test
+
+production:
+  <<: *default
+  database: pomodoro_sheet_api_production
