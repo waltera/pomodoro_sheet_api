@@ -5,7 +5,7 @@ class CreatePomodoros < ActiveRecord::Migration[5.1]
       t.datetime :end_at
       t.string :status
 
-      t.belongs_to :task, index: true
+      t.belongs_to :task, index: true, null: false
     end
   end
 end
