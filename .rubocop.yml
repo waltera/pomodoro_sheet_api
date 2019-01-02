@@ -5,6 +5,7 @@ inherit_gem:
 AllCops:
   Excludes:
     - bin/*
+    - db/schema.rb
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
