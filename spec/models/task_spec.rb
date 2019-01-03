@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Task, type: :model do
+  include_examples 'StatusConcernShared'
+
   describe '.relations' do
     it { should have_many(:pomodoros) }
   end
