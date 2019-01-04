@@ -11,7 +11,7 @@ RuboCop::RakeTask.new
 
 require 'rubycritic/rake_task'
 RubyCritic::RakeTask.new do |t|
-  t.paths = FileList.new('app/', 'lib/', 'spec/')
+  t.paths = FileList.new('app/', 'lib/')
 end
 
 task(:default).clear
