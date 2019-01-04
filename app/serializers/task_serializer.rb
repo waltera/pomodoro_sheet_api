@@ -3,5 +3,6 @@
 class TaskSerializer
   include FastJsonapi::ObjectSerializer
 
-  attributes :description
+  attribute :description
+  has_many :pomodoros
 end
