@@ -18,8 +18,11 @@ ActiveRecord::Schema.define(version: 20190102140713) do
   create_table "pomodoros", force: :cascade do |t|
     t.datetime "start_at"
     t.datetime "end_at"
+    t.datetime "canceled_at"
     t.integer "status", default: 0
     t.bigint "task_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["task_id"], name: "index_pomodoros_on_task_id"
   end
 
