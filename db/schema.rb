@@ -28,8 +28,6 @@ ActiveRecord::Schema.define(version: 20190102140713) do
 
   create_table "tasks", force: :cascade do |t|
     t.string "description"
-    t.integer "first_planned"
-    t.integer "second_planned"
     t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
