@@ -3,7 +3,7 @@
 class Task < ApplicationRecord
   include StatusConcern
 
-  has_many :pomodoros
+  has_many :pomodoros, dependent: :destroy
 
   validates :description, presence: true
 

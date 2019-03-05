@@ -1,21 +1,18 @@
 # frozen_string_literal: true
 
 class TaskUpdateForm < TaskForm
-  attr_reader :id
+  attr_reader :id, :task
 
-  def initialize(attrs = {})
-    @id = attrs[:id]
-    super
+  def initialize(task, attrs = {})
+    @task = task
+    @id   = attrs[:id]
+    super(attrs)
   end
 
   def perform
     return false unless valid?
 
     task.update(description: description) && update_pomodoros
-  end
-
-  def task
-    @task ||= Task.find(id)
   end
 
   def update_pomodoros

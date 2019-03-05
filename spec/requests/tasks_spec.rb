@@ -12,6 +12,19 @@ RSpec.describe 'Task Api' do
       get '/tasks'
     end
 
+    it { expect(response).to have_http_status(:ok) }
+    it { expect(response.body).to eq(result) }
+  end
+
+  describe 'GET #show' do
+    let!(:task)   { create(:task, :with_pomodoros) }
+    let!(:result) { TaskSerializer.new(task).serialized_json }
+
+    before do
+      get "/tasks/#{task.id}"
+    end
+
+    it { expect(response).to have_http_status(:ok) }
     it { expect(response.body).to eq(result) }
   end
 
@@ -117,5 +130,17 @@ RSpec.describe 'Task Api' do
       it { expect(response).to have_http_status(:unprocessable_entity) }
       it { expect(parsed_body).to eq(result) }
     end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:task) { create(:task, :with_pomodoros) }
+
+    before do
+      delete "/tasks/#{task.id}"
+    end
+
+    it { expect(response).to have_http_status(:ok) }
+    it { expect(Task.count).to eq(0) }
+    it { expect(Pomodoro.count).to eq(0) }
   end
 end

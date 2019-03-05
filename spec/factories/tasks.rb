@@ -5,7 +5,9 @@ FactoryBot.define do
     sequence(:description) { |n| "Task #{n}" }
 
     trait :with_pomodoros do
-      pomodoros { |task| [task.association(:pomodoro, strategy: :build)] }
+      pomodoros do |task|
+        [task.association(:pomodoro, strategy: :build)]
+      end
     end
   end
 end

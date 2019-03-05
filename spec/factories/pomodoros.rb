@@ -7,5 +7,9 @@ FactoryBot.define do
       end_at { DateTime.now }
       status { :done }
     end
+
+    trait :with_task do
+      association :task
+    end
   end
 end
