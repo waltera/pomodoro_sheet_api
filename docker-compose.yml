@@ -23,3 +23,7 @@ services:
 volumes:
   postgres_data: {}
   bundle_cache: {}
+networks:
+  default:
+    external:
+      name: pomodoro-sheet_default
