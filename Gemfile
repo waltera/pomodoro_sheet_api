@@ -26,7 +26,7 @@ gem 'fast_jsonapi', '1.5'
 # gem 'capistrano-rails', group: :development
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-# gem 'rack-cors'
+gem 'rack-cors'
 
 # Centralization of locale data collection for Ruby on Rails
 gem 'rails-i18n', '5.1'
