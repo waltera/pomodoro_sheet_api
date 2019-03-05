@@ -4,9 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'Task Api' do
   describe 'GET #index' do
-    let!(:task) { create(:task) }
+    let!(:task)     { create(:task) }
     let!(:pomodoro) { create(:pomodoro, task: task) }
-    let!(:result) { TaskSerializer.new(Task.all).serialized_json }
+    let!(:result)   { TaskSerializer.new(Task.all).serialized_json }
 
     before do
       get '/tasks'
@@ -53,6 +53,69 @@ RSpec.describe 'Task Api' do
 
       it { expect(response).to have_http_status(:unprocessable_entity) }
       it { expect(parsed_body).to eq('pomodoros' => ['deve ser maior que 0']) }
+    end
+  end
+
+  describe 'PUT #update' do
+    before do
+      put "/tasks/#{task.id}", params: { task: params }
+      task.reload
+    end
+
+    context 'success' do
+      let(:task)   { create(:task, :with_pomodoros) }
+      let(:params) { { description: 'Changed', pomodoros: 1 } }
+
+      it { expect(response).to have_http_status(:ok) }
+      it { expect(response.body).to eq(TaskSerializer.new(task).serialized_json) }
+      it { expect(task.description).to eq('Changed') }
+      it { expect(task.pomodoros.count).to eq(1) }
+    end
+
+    context 'success adding pomodoro' do
+      let(:task)   { create(:task, :with_pomodoros) }
+      let(:params) { { description: 'Changed', pomodoros: 2 } }
+
+      it 'should create pomodoro' do
+        expect(task.pomodoros.count).to eq(2)
+        expect(task.pomodoros.pluck(:first_try).uniq).to eq([true])
+      end
+    end
+
+    context 'succes add pomodoro second planning' do
+      let(:pomodoro_1) { build(:pomodoro, :status_done) }
+      let(:pomodoro_2) { build(:pomodoro) }
+      let(:task)       { create(:task, pomodoros: [pomodoro_1, pomodoro_2]) }
+      let(:params)     { { description: 'Changed', pomodoros: 2 } }
+
+      it 'should create pomodoro' do
+        expect(task.pomodoros.count).to eq(3)
+        expect(task.pomodoros.done.count).to eq(1)
+        expect(task.pomodoros.pending.count).to eq(2)
+        expect(task.pomodoros.pending.where(first_try: false).count).to eq(1)
+      end
+    end
+
+    context 'success removing pomodoro' do
+      let(:pomodoro_1) { build(:pomodoro, :status_done) }
+      let(:pomodoro_2) { build(:pomodoro) }
+      let(:pomodoro_3) { build(:pomodoro) }
+      let(:task)       { create(:task, pomodoros: [pomodoro_1, pomodoro_2, pomodoro_3]) }
+      let(:params)     { { description: 'Changed', pomodoros: 1 } }
+
+      it 'should remove pomodoro' do
+        expect(task.pomodoros.done.count).to eq(1)
+        expect(task.pomodoros.pending.count).to eq(1)
+      end
+    end
+
+    context 'fail' do
+      let(:task)   { create(:task, :with_pomodoros) }
+      let(:params) { { description: '', pomodoros: 1 } }
+      let(:result) { { 'description' => ['não pode ficar em branco'] } }
+
+      it { expect(response).to have_http_status(:unprocessable_entity) }
+      it { expect(parsed_body).to eq(result) }
     end
   end
 end

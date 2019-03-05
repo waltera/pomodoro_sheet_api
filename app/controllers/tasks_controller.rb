@@ -15,6 +15,16 @@ class TasksController < ApplicationController
     end
   end
 
+  def update
+    form = TaskUpdateForm.new(task_params.merge(id: params[:id]))
+
+    if form.perform
+      render json: TaskSerializer.new(form.task).serialized_json
+    else
+      render_errors(form.errors)
+    end
+  end
+
   private
 
     def task_params

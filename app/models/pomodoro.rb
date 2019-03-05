@@ -9,6 +9,7 @@ class Pomodoro < ApplicationRecord
   validate :validate_canceled_at, if: :canceled?
 
   scope :done, -> { where(status: :done) }
+  scope :pending, -> { where(status: :pending) }
 
   def validate_start_at
     return if start_at.present?

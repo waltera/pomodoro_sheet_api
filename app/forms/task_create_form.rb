@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
-class TaskCreateForm
-  include ActiveModel::Model
-  include ActiveModel::Validations
-
-  attr_accessor :description, :pomodoros
-
-  validates :description, :pomodoros, presence: true
-  validates_numericality_of :pomodoros, greater_than: 0
-
+class TaskCreateForm < TaskForm
   def perform
     return unless valid?
 
