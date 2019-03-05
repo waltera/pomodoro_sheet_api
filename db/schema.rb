@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20190102140713) do
     t.datetime "end_at"
     t.datetime "canceled_at"
     t.integer "status", default: 0
+    t.boolean "first_try", default: true
     t.bigint "task_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
