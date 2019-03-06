@@ -5,27 +5,19 @@ class Pomodoro < ApplicationRecord
 
   belongs_to :task
 
-  validate :validate_start_at, :validate_end_at, if: :done?
-  validate :validate_canceled_at, if: :canceled?
+  validate :fill_status_date
 
   scope :done, -> { where(status: :done) }
   scope :pending, -> { where(status: :pending) }
 
-  def validate_start_at
-    return if start_at.present?
+  def fill_status_date
+    return unless status_changed?
 
-    errors.add(:start_at, :blank)
-  end
-
-  def validate_end_at
-    return if end_at.present?
-
-    errors.add(:end_at, :blank)
-  end
-
-  def validate_canceled_at
-    return if canceled_at.present?
-
-    errors.add(:canceled_at, :blank)
+    if done?
+      self.end_at = DateTime.now
+      self.start_at = end_at - 25.minutes
+    elsif canceled?
+      self.canceled_at = DateTime.now
+    end
   end
 end

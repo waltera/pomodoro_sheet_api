@@ -9,69 +9,28 @@ RSpec.describe Pomodoro do
     it { should belong_to(:task) }
   end
 
-  context 'Custom Validations' do
+  describe '#fill_status_date' do
+    let!(:result)   { DateTime.new(2019, 1, 1) }
+    let!(:pomodoro) { create(:pomodoro, :with_task) }
+    let!(:mocks) do
+      allow(DateTime).to receive(:now) { result }
+    end
+
     before do
-      pomodoro.save
+      pomodoro.update(status: status)
     end
 
-    describe '#validate_start_at' do
-      context 'success' do
-        let!(:pomodoro) { build(:pomodoro, start_at: DateTime.new(2018, 1, 1, 1), status: :done) }
+    context 'success with done' do
+      let(:status) { :done }
 
-        it { expect(pomodoro.errors[:start_at]).to eq([]) }
-      end
-
-      context 'success without done' do
-        let!(:pomodoro) { build(:pomodoro, start_at: nil, status: :pending) }
-
-        it { expect(pomodoro.errors[:start_at]).to eq([]) }
-      end
-
-      context 'fail' do
-        let!(:pomodoro) { build(:pomodoro, start_at: nil, status: :done) }
-
-        it { expect(pomodoro.errors[:start_at]).to eq(['não pode ficar em branco']) }
-      end
+      it { expect(pomodoro.start_at).to eq(result - 25.minutes) }
+      it { expect(pomodoro.end_at).to eq(result) }
     end
 
-    describe '#validate_end_at' do
-      context 'success' do
-        let!(:pomodoro) { build(:pomodoro, end_at: DateTime.new(2018, 1, 1, 1), status: :done) }
+    context 'success with canceled' do
+      let(:status) { :canceled }
 
-        it { expect(pomodoro.errors[:end_at]).to eq([]) }
-      end
-
-      context 'success without done' do
-        let!(:pomodoro) { build(:pomodoro, end_at: nil, status: :pending) }
-
-        it { expect(pomodoro.errors[:end_at]).to eq([]) }
-      end
-
-      context 'fail' do
-        let!(:pomodoro) { build(:pomodoro, end_at: nil, status: :done) }
-
-        it { expect(pomodoro.errors[:end_at]).to eq(['não pode ficar em branco']) }
-      end
-    end
-
-    describe '#validate_canceled_at' do
-      context 'success' do
-        let!(:pomodoro) { build(:pomodoro, canceled_at: DateTime.new(2018, 1, 1, 1), status: :canceled) }
-
-        it { expect(pomodoro.errors[:canceled_at]).to eq([]) }
-      end
-
-      context 'success without canceled' do
-        let!(:pomodoro) { build(:pomodoro, canceled_at: nil, status: :pending) }
-
-        it { expect(pomodoro.errors[:canceled_at]).to eq([]) }
-      end
-
-      context 'fail' do
-        let!(:pomodoro) { build(:pomodoro, canceled_at: nil, status: :canceled) }
-
-        it { expect(pomodoro.errors[:canceled_at]).to eq(['não pode ficar em branco']) }
-      end
+      it { expect(pomodoro.canceled_at).to eq(result) }
     end
   end
 end
