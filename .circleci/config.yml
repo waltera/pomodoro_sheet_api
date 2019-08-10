@@ -54,15 +54,11 @@ jobs:
             TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
               circleci tests split --split-by=timings)"
 
-            bundle exec rspec \
+            COVERAGE=true bundle exec rspec \
               --format progress \
               --out /tmp/test-results/rspec.xml \
               --format progress \
               $TEST_FILES
-      # run rubocop
-      - run:
-          name: run tests
-          command: bundle exec rubocop
 
       # collect reports
       - store_test_results:
