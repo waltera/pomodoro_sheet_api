@@ -11,6 +11,7 @@ jobs:
         environment:
           DB_USERNAME: postgres
           DB_HOST: localhost
+          RACK_ENV: test
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -53,11 +54,7 @@ jobs:
             TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
               circleci tests split --split-by=timings)"
 
-            bundle exec rspec \
-              --format progress \
-              --format RspecJunitFormatter \
-              --out /tmp/test-results/rspec.xml \
-              --format progress \
+            bundle exec rake  \
               $TEST_FILES
 
       # collect reports
