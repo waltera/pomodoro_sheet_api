@@ -8,9 +8,9 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/ruby:2.6.3-node-browsers
-      environment:
-        DB_USERNAME: postgres
-        DB_HOST: localhost
+        environment:
+          DB_USERNAME: postgres
+          DB_HOST: localhost
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
