@@ -1,11 +1,20 @@
-inherit_gem:
-  rubocop-rails:
-    - config/rails.yml
+require: rubocop-rails
 
 AllCops:
   Excludes:
     - bin/*
-    - db/schema.rb
+    - config/**/*
+    - spec/**/*
+    - db/**/*
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+
+Layout/IndentationConsistency:
+  EnforcedStyle: indented_internal_methods

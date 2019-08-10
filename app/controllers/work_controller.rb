@@ -9,6 +9,7 @@ class WorkController < ApplicationController
   end
 
   private
+
     def task
       @task ||= Task.find(params[:task_id])
     end

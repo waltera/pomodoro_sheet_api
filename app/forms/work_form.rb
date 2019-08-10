@@ -8,7 +8,7 @@ class WorkForm
   end
 
   def perform
-    if task.pomodoros.pending.count > 0
+    if task.pomodoros.pending.count.positive?
       task.pomodoros.pending.first.update(status: :done)
     else
       task.pomodoros.create(first_try: false, status: :done)

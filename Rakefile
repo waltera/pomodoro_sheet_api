@@ -10,9 +10,7 @@ require 'rubocop/rake_task'
 RuboCop::RakeTask.new
 
 require 'rubycritic/rake_task'
-RubyCritic::RakeTask.new do |t|
-  t.paths = FileList.new('app/', 'lib/')
-end
+RubyCritic::RakeTask.new
 
 task(:default).clear
-task default: %i(spec rubocop rubycritic)
+task default: %i[spec rubocop rubycritic]

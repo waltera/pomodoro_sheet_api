@@ -6,8 +6,4 @@ class Task < ApplicationRecord
   has_many :pomodoros, dependent: :destroy
 
   validates :description, presence: true
-
-  def pomodoros_done
-    pomodoros.done
-  end
 end
