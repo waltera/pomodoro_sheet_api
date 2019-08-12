@@ -1,26 +1,11 @@
-# README
-
 [![CircleCI](https://circleci.com/gh/waltera/pomodoro_sheet_api.svg?style=svg)](https://circleci.com/gh/waltera/pomodoro_sheet_api)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Pomodoro Sheet API
 
-Things you may want to cover:
+API to register units of work inspired on pomodoro technique.
 
-* Ruby version
 
-* System dependencies
+[^bignote]: Here's one with multiple paragraphs and code.
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+    This application does not afiliada, associated or financiada por Pomodoro Technique® or Francesco Cirillo.
+    Pomodoro Technique® e Pomodoro™ they are registered trademarks by Francesco Cirillo.
