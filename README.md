@@ -4,5 +4,5 @@
 
 API to register units of work inspired on pomodoro technique.
 
-<sub>This application does not affiliated, associated or financed por Pomodoro Technique® or Francesco Cirillo.
-Pomodoro Technique® e Pomodoro™ they are registered trademarks by Francesco Cirillo.</sub>
+<sub>This application does not affiliated, associated or financed by Pomodoro Technique® or Francesco Cirillo.
+Pomodoro Technique® and Pomodoro™ they are registered trademarks by Francesco Cirillo.</sub>
