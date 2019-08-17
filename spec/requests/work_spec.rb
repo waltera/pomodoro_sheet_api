@@ -13,7 +13,7 @@ RSpec.describe 'Work Api' do
       end
 
       it { expect(response).to have_http_status(:created) }
-      it { expect(response.body).to eq(TaskSerializer.new(task).serialized_json) }
+      it { expect(parsed_body).to eq(task_json(task)) }
       it { expect(task.pomodoros.done.count).to eq(1) }
     end
 
@@ -26,7 +26,7 @@ RSpec.describe 'Work Api' do
       end
 
       it { expect(response).to have_http_status(:created) }
-      it { expect(response.body).to eq(TaskSerializer.new(task).serialized_json) }
+      it { expect(parsed_body).to eq(task_json(task)) }
       it { expect(task.pomodoros.done.where(first_try: false).count).to eq(1) }
     end
   end

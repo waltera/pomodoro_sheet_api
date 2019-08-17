@@ -5,7 +5,7 @@ class WorkController < ApplicationController
     form = WorkForm.new(task)
     form.perform
 
-    render json: TaskSerializer.new(form.task).serialized_json, status: :created
+    render_created(form.task, TaskBlueprint)
   end
 
   private

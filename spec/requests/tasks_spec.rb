@@ -6,26 +6,31 @@ RSpec.describe 'Task Api' do
   describe 'GET #index' do
     let!(:task)     { create(:task) }
     let!(:pomodoro) { create(:pomodoro, task: task) }
-    let!(:result)   { TaskSerializer.new(Task.all).serialized_json }
+    let!(:result) do
+      {
+        'meta' => { 'total' => 1 },
+        'rows' => [task_json(task)]
+      }
+    end
 
     before do
       get '/tasks'
     end
 
     it { expect(response).to have_http_status(:ok) }
-    it { expect(response.body).to eq(result) }
+    it { expect(parsed_body).to eq(result) }
   end
 
   describe 'GET #show' do
     let!(:task)   { create(:task, :with_pomodoros) }
-    let!(:result) { TaskSerializer.new(task).serialized_json }
+    let!(:result) { task_json(task) }
 
     before do
       get "/tasks/#{task.id}"
     end
 
     it { expect(response).to have_http_status(:ok) }
-    it { expect(response.body).to eq(result) }
+    it { expect(parsed_body).to eq(result) }
   end
 
   describe 'POST #create' do
@@ -38,7 +43,7 @@ RSpec.describe 'Task Api' do
 
       it { expect(Task.count).to eq(1) }
       it { expect(Task.first.pomodoros.count).to eq(2) }
-      it { expect(response.body).to eq(TaskSerializer.new(Task.first).serialized_json) }
+      it { expect(parsed_body).to eq(task_json(Task.first)) }
     end
 
     context 'fail without description and pomodoros' do
@@ -80,7 +85,7 @@ RSpec.describe 'Task Api' do
       let(:params) { { description: 'Changed', pomodoros: 1 } }
 
       it { expect(response).to have_http_status(:ok) }
-      it { expect(response.body).to eq(TaskSerializer.new(task).serialized_json) }
+      it { expect(parsed_body).to eq(task_json(task)) }
       it { expect(task.description).to eq('Changed') }
       it { expect(task.pomodoros.count).to eq(1) }
     end

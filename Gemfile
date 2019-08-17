@@ -13,8 +13,8 @@ gem 'rails'
 gem 'pg'
 # Use Puma as the app server
 gem 'puma'
-# A lightning fast JSON:API serializer for Ruby Objects.
-gem 'fast_jsonapi'
+# Simple, Fast, and Declarative Serialization Library for Ruby
+gem 'blueprinter'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'

@@ -2,18 +2,18 @@
 
 class TasksController < ApplicationController
   def index
-    render json: TaskSerializer.new(Task.all).serialized_json
+    render_paginated(Task.all, TaskBlueprint)
   end
 
   def show
-    render json: TaskSerializer.new(task).serialized_json
+    render json: TaskBlueprint.render(task)
   end
 
   def create
     form = TaskCreateForm.new(task_params)
 
     if form.perform
-      render_created(form.task, TaskSerializer)
+      render_created(form.task, TaskBlueprint)
     else
       render_errors(form.errors)
     end
@@ -23,7 +23,7 @@ class TasksController < ApplicationController
     form = TaskUpdateForm.new(task, task_params)
 
     if form.perform
-      render json: TaskSerializer.new(form.task).serialized_json
+      render_updated(form.task, TaskBlueprint)
     else
       render_errors(form.errors)
     end
