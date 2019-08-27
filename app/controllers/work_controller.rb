@@ -2,7 +2,7 @@
 
 class WorkController < ApplicationController
   def create
-    form = WorkForm.new(task)
+    form = WorkForm.new(task, current_user)
     form.perform
 
     render_created(form.task, TaskBlueprint)

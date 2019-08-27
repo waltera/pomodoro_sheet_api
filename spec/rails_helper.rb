@@ -37,7 +37,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
 
   config.include JsonHelpers, type: :request
-  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include RequestHelpers, type: :request
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and

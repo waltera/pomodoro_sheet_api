@@ -5,9 +5,10 @@ require 'rails_helper'
 RSpec.describe 'Work Api' do
   describe 'POST #create' do
     context 'with pomodoros' do
-      let!(:task) { create(:task, :with_pomodoros) }
+      let!(:task) { create(:task, :with_pomodoros, :with_user) }
 
       before do
+        authenticate(task.user)
         post "/tasks/#{task.id}/work"
         task.reload
       end
@@ -18,9 +19,10 @@ RSpec.describe 'Work Api' do
     end
 
     context 'without pomodoros' do
-      let!(:task) { create(:task) }
+      let!(:task) { create(:task, :with_user) }
 
       before do
+        authenticate(task.user)
         post "/tasks/#{task.id}/work"
         task.reload
       end

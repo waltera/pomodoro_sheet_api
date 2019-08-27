@@ -53,9 +53,9 @@ GEM
     bcrypt (3.1.13)
     blueprinter (0.19.0)
     builder (3.2.3)
-    byebug (11.0.1)
     codeclimate-engine-rb (0.4.1)
       virtus (~> 1.0)
+    coderay (1.1.2)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.1.5)
@@ -125,6 +125,9 @@ GEM
       ast (~> 2.4.0)
     path_expander (1.0.4)
     pg (1.1.4)
+    pry (0.12.2)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
     psych (3.1.0)
     public_suffix (3.1.1)
     puma (4.1.0)
@@ -256,12 +259,12 @@ PLATFORMS
 
 DEPENDENCIES
   blueprinter
-  byebug
   devise
   doorkeeper (~> 5.1)
   factory_bot_rails
   listen
   pg
+  pry
   puma
   rack-cors
   rails

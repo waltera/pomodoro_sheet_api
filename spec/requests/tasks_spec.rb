@@ -4,18 +4,19 @@ require 'rails_helper'
 
 RSpec.describe 'Task Api' do
   describe 'GET #index' do
-    let!(:user)     { create(:user) }
-    let!(:task)     { create(:task) }
-    let!(:pomodoro) { create(:pomodoro, task: task) }
+    let!(:user)   { create(:user) }
+    let!(:task_1) { create(:task, :with_pomodoros, user: user) }
+    let!(:task_2) { create(:task, :with_user, :with_pomodoros) }
     let!(:result) do
       {
         'meta' => { 'total' => 1 },
-        'rows' => [task_json(task)]
+        'rows' => [task_json(task_1)]
       }
     end
 
     before do
-      get '/tasks', params: { access_token: user.token }
+      authenticate(user)
+      get '/tasks'
     end
 
     it { expect(response).to have_http_status(:ok) }
@@ -23,10 +24,12 @@ RSpec.describe 'Task Api' do
   end
 
   describe 'GET #show' do
-    let!(:task)   { create(:task, :with_pomodoros) }
+    let!(:user)   { create(:user) }
+    let!(:task)   { create(:task, :with_pomodoros, user: user) }
     let!(:result) { task_json(task) }
 
     before do
+      authenticate(user)
       get "/tasks/#{task.id}"
     end
 
@@ -35,7 +38,10 @@ RSpec.describe 'Task Api' do
   end
 
   describe 'POST #create' do
+    let(:user) { create(:user) }
+
     before do
+      authenticate(user)
       post '/tasks', params: { task: params }
     end
 
@@ -76,13 +82,16 @@ RSpec.describe 'Task Api' do
   end
 
   describe 'PUT #update' do
+    let(:user) { create(:user) }
+
     before do
+      authenticate(user)
       put "/tasks/#{task.id}", params: { task: params }
       task.reload
     end
 
     context 'success' do
-      let(:task)   { create(:task, :with_pomodoros) }
+      let(:task)   { create(:task, :with_pomodoros, user: user) }
       let(:params) { { description: 'Changed', pomodoros: 1 } }
 
       it { expect(response).to have_http_status(:ok) }
@@ -92,7 +101,7 @@ RSpec.describe 'Task Api' do
     end
 
     context 'success adding pomodoro' do
-      let(:task)   { create(:task, :with_pomodoros) }
+      let(:task)   { create(:task, :with_pomodoros, user: user) }
       let(:params) { { description: 'Changed', pomodoros: 2 } }
 
       it 'should create pomodoro' do
@@ -102,9 +111,9 @@ RSpec.describe 'Task Api' do
     end
 
     context 'succes add pomodoro second planning' do
-      let(:pomodoro_1) { build(:pomodoro, :status_done) }
-      let(:pomodoro_2) { build(:pomodoro) }
-      let(:task)       { create(:task, pomodoros: [pomodoro_1, pomodoro_2]) }
+      let(:pomodoro_1) { build(:pomodoro, :status_done, user: user) }
+      let(:pomodoro_2) { build(:pomodoro, user: user) }
+      let(:task)       { create(:task, user: user, pomodoros: [pomodoro_1, pomodoro_2]) }
       let(:params)     { { description: 'Changed', pomodoros: 2 } }
 
       it 'should create pomodoro' do
@@ -116,11 +125,13 @@ RSpec.describe 'Task Api' do
     end
 
     context 'success removing pomodoro' do
-      let(:pomodoro_1) { build(:pomodoro, :status_done) }
-      let(:pomodoro_2) { build(:pomodoro) }
-      let(:pomodoro_3) { build(:pomodoro) }
-      let(:task)       { create(:task, pomodoros: [pomodoro_1, pomodoro_2, pomodoro_3]) }
+      let(:pomodoro_1) { build(:pomodoro, :status_done, user: user) }
+      let(:pomodoro_2) { build(:pomodoro, user: user) }
+      let(:pomodoro_3) { build(:pomodoro, user: user) }
       let(:params)     { { description: 'Changed', pomodoros: 1 } }
+      let(:task) do
+        create(:task, user: user, pomodoros: [pomodoro_1, pomodoro_2, pomodoro_3])
+      end
 
       it 'should remove pomodoro' do
         expect(task.pomodoros.done.count).to eq(1)
@@ -129,7 +140,7 @@ RSpec.describe 'Task Api' do
     end
 
     context 'fail' do
-      let(:task)   { create(:task, :with_pomodoros) }
+      let(:task)   { create(:task, :with_pomodoros, user: user) }
       let(:params) { { description: '', pomodoros: 1 } }
       let(:result) { { 'description' => ['não pode ficar em branco'] } }
 
@@ -139,9 +150,10 @@ RSpec.describe 'Task Api' do
   end
 
   describe 'DELETE #destroy' do
-    let!(:task) { create(:task, :with_pomodoros) }
+    let!(:task) { create(:task, :with_pomodoros, :with_user) }
 
     before do
+      authenticate(task.user)
       delete "/tasks/#{task.id}"
     end
 

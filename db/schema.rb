@@ -36,20 +36,25 @@ ActiveRecord::Schema.define(version: 2019_08_25_150403) do
     t.datetime "canceled_at"
     t.integer "status", default: 0
     t.boolean "first_try", default: true
+    t.bigint "user_id", null: false
     t.bigint "task_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["task_id"], name: "index_pomodoros_on_task_id"
+    t.index ["user_id"], name: "index_pomodoros_on_user_id"
   end
 
   create_table "tasks", force: :cascade do |t|
     t.string "description"
     t.integer "status", default: 0
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "name"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

@@ -11,7 +11,7 @@ RSpec.describe Pomodoro do
 
   describe '#fill_status_date' do
     let!(:result)   { DateTime.new(2019, 1, 1) }
-    let!(:pomodoro) { create(:pomodoro, :with_task) }
+    let!(:pomodoro) { create(:pomodoro, :with_task, :with_user) }
     let!(:mocks) do
       allow(DateTime).to receive(:now) { result }
     end

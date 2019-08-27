@@ -7,6 +7,7 @@ class CreatePomodoros < ActiveRecord::Migration[5.1]
       t.integer :status, default: 0
       t.boolean :first_try, default: :true
 
+      t.belongs_to :user, index: true, null: false
       t.belongs_to :task, index: true, null: false
 
       t.timestamps

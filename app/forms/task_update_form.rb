@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 class TaskUpdateForm < TaskForm
-  attr_reader :id, :task
+  attr_reader :task
 
   def initialize(task, attrs = {})
     @task = task
-    @id   = attrs[:id]
     super(attrs)
   end
 
@@ -25,7 +24,7 @@ class TaskUpdateForm < TaskForm
 
   def create_pomodoros
     (pomodoros_integer - pending_count).times.all? do
-      task.pomodoros.create(first_try: done_count.zero?)
+      task.pomodoros.create(first_try: done_count.zero?, user_id: user_id)
     end
   end
 

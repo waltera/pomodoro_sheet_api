@@ -2,7 +2,7 @@
 
 class TasksController < ApplicationController
   def index
-    render_paginated(Task.all, TaskBlueprint)
+    render_paginated(scoped, TaskBlueprint)
   end
 
   def show
@@ -37,10 +37,14 @@ class TasksController < ApplicationController
   private
 
     def task
-      @task ||= Task.find(params[:id])
+      @task ||= scoped.find(params[:id])
+    end
+
+    def scoped
+      @scoped ||= Task.of_user(current_user)
     end
 
     def task_params
-      params.require(:task).permit(:description, :pomodoros)
+      params.require(:task).permit(:description, :pomodoros).merge(user_id: current_user.id)
     end
 end

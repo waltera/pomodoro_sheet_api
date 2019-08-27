@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Pomodoro < ApplicationRecord
+  include UserScopeConcern
   include StatusConcern
 
   belongs_to :task
