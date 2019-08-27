@@ -5,12 +5,3 @@
 
 require_relative 'config/application'
 Rails.application.load_tasks
-
-require 'rubocop/rake_task'
-RuboCop::RakeTask.new
-
-require 'rubycritic/rake_task'
-RubyCritic::RakeTask.new
-
-task(:default).clear
-task default: %i[spec rubocop rubycritic]
