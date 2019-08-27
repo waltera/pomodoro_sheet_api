@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Task Api' do
   describe 'GET #index' do
+    let!(:user)     { create(:user) }
     let!(:task)     { create(:task) }
     let!(:pomodoro) { create(:pomodoro, task: task) }
     let!(:result) do
@@ -14,7 +15,7 @@ RSpec.describe 'Task Api' do
     end
 
     before do
-      get '/tasks'
+      get '/tasks', params: { access_token: user.token }
     end
 
     it { expect(response).to have_http_status(:ok) }
