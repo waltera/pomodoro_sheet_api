@@ -20,6 +20,7 @@ module JsonHelpers
       'created_at' => pomodoro.created_at.try(:to_s),
       'end_at' => pomodoro.end_at.try(:to_s),
       'start_at' => pomodoro.start_at.try(:to_s),
+      'first_try' => pomodoro.first_try,
       'status' => pomodoro.status
     }
   end
